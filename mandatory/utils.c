@@ -24,7 +24,7 @@ void	errors(int code, char *str)
 	if (code == 1)
 		ft_putendl_fd("Invalid format.\n./pipex infile \"cmd\" \"cmd\" outfile",
 			2);
-	if (code == 2 || code == 3)
+	if (code == 2 || code == 3)                
 	{
 		perror(str);
 		if (code == 2)

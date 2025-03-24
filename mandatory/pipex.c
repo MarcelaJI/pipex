@@ -2,13 +2,14 @@
 
 int	execute(t_cmd *cmd, char **env)
 {
-	if (!cmd->path)
-		return (-1);
-	if (access(cmd->path, F_OK) != 0 || cmd->path[0] == '\0')
-		return (-1);
+	if (!cmd || !cmd->path || !cmd->args)
+		return (-1);  // Si el comando no existe o no está bien formado, devolvemos error
+	if (access(cmd->path, X_OK) != 0)
+		return (-1);  // Si no se puede ejecutar el comando
 	execve(cmd->path, cmd->args, env);
 	return (-1);
 }
+
 
 void    pipex(int ac, char **av, char **env)
 {

@@ -1,18 +1,4 @@
-#include "pipex.h"
-
-char	*join_path(char *folder, char *cmd)
-{
-	char	*temp;
-	char	*full_path;
-
-	temp = ft_strjoin(folder, "/"); 
-	if (!temp)
-		return (NULL);
-	full_path = ft_strjoin(temp, cmd);
-	free(temp);
-	return (full_path);
-}
-
+#include "pipex_bonus.h"
 
 char	*get_env_path(char **env)
 {
@@ -22,12 +8,23 @@ char	*get_env_path(char **env)
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-		{
 			return (env[i] + 5);
-		}
 		i++;
 	}
 	return (NULL);
+}
+
+char	*join_path(char *folder, char *cmd)
+{
+	char	*temp;
+	char	*full_path;
+
+	temp = ft_strjoin(folder, "/");
+	if (!temp)
+		return (NULL);
+	full_path = ft_strjoin(temp, cmd);
+	free(temp);
+	return (full_path);
 }
 
 char	*check_direct_path(char *cmd_name)
@@ -66,50 +63,58 @@ char	*search_in_path(char *cmd_name, char **env)
 	return (NULL);
 }
 
-
 char	*find_cmd_path(char *cmd_name, char **env)
 {
-	// Verificación si el comando es vacío
-	if (cmd_name == NULL || cmd_name[0] == '\0') {
-		return (NULL);  // Si el comando está vacío, devuelve NULL
-	}
-
 	if (ft_strchr(cmd_name, '/'))
 		return (check_direct_path(cmd_name));
 	return (search_in_path(cmd_name, env));
 }
 
-void	parse_cmds(t_pipex *pipex, char **av, char **env)
+t_cmd	*create_cmd(char *arg, char **env, t_pipex *pipex)
 {
-	int		i;
 	t_cmd	*cmd;
 
-	i = 0;
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+	{
+		errors(3, "malloc");
+		free_pipex(pipex);
+		exit(EXIT_FAILURE);
+	}
+	cmd->origin_cmd = ft_strdup(arg);
+	cmd->args = ft_split(cmd->origin_cmd, ' ');
+	if (!cmd->args || !cmd->args[0])
+	{
+		errors(4, cmd->origin_cmd);
+		free_pipex(pipex);
+		exit(127);
+	}
+	cmd->path = find_cmd_path(cmd->args[0], env);
+	if (!cmd->path)
+		errors(4, cmd->origin_cmd);
+	return (cmd);
+}
+
+
+void	parse_cmds(t_pipex *pipex, char **av, char **env)
+{
+	int	i;
+	int	offset;
+
+	offset = (pipex->here_doc == 1) ? 3 : 2;
 	pipex->cmds = malloc(sizeof(t_cmd *) * (pipex->number_cmds + 1));
 	if (!pipex->cmds)
-		(errors(3, "malloc"), exit(EXIT_FAILURE));
+	{
+		errors(3, "malloc");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
 	while (i < pipex->number_cmds)
 	{
-		cmd = malloc(sizeof(t_cmd));
-		if (!cmd)
-			(errors(3, "malloc"), free_pipex(pipex), exit(EXIT_FAILURE));
-		cmd->origin_cmd = ft_strdup(av[i + 2]);
-		if (cmd->origin_cmd == NULL || cmd->origin_cmd[0] == '\0') {
-			errors(4, cmd->origin_cmd);  
-			free_pipex(pipex);
-			exit(127);
-		}
-		cmd->args = ft_split(cmd->origin_cmd, ' ');
-		if (!cmd->args || !cmd->args[0]) {
-			errors(4, cmd->origin_cmd);  
-			free_pipex(pipex);
-			exit(127);
-		}
-		cmd->path = find_cmd_path(cmd->args[0], env);
-		pipex->cmds[i++] = cmd;
+		pipex->cmds[i] = create_cmd(av[i + offset], env, pipex);
+		i++;
 	}
 	pipex->cmds[i] = NULL;
 }
-
 
 
