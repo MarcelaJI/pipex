@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ingjimen <ingjimen@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/25 09:19:44 by ingjimen          #+#    #+#             */
+/*   Updated: 2025/03/25 09:19:49 by ingjimen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 void	free_pipex(t_pipex *pipex)
@@ -18,13 +30,12 @@ void	free_pipex(t_pipex *pipex)
 	ft_safe_free((void **)&pipex->cmds);
 }
 
-
 void	errors(int code, char *str)
 {
 	if (code == 1)
 		ft_putendl_fd("Invalid format.\n./pipex infile \"cmd\" \"cmd\" outfile",
 			2);
-	if (code == 2 || code == 3)                
+	if (code == 2 || code == 3)
 	{
 		perror(str);
 		if (code == 2)

@@ -10,14 +10,17 @@ GNL	= get_next_line/get_next_line_bonus.c \
 
 SRCS	= mandatory/pipex.c \
 		  mandatory/path.c \
+		  mandatory/path2.c \
 		  mandatory/utils.c \
 		  mandatory/processes.c
 
 BSRCS	= bonus/pipex_bonus.c \
 		  bonus/path_bonus.c \
+		  bonus/path_bonus2.c \
 		  bonus/utils_bonus.c \
 		  bonus/here_doc_bonus.c \
 		  bonus/processes_bonus.c 
+		
 
 OBJS	= $(SRCS:.c=.o)
 BOBJS	= $(BSRCS:.c=.o)

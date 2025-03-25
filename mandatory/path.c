@@ -1,41 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ingjimen <ingjimen@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/25 09:18:48 by ingjimen          #+#    #+#             */
+/*   Updated: 2025/03/25 09:18:52 by ingjimen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
-
-char	*join_path(char *folder, char *cmd)
-{
-	char	*temp;
-	char	*full_path;
-
-	temp = ft_strjoin(folder, "/"); 
-	if (!temp)
-		return (NULL);
-	full_path = ft_strjoin(temp, cmd);
-	free(temp);
-	return (full_path);
-}
-
-
-char	*get_env_path(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-		{
-			return (env[i] + 5);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-char	*check_direct_path(char *cmd_name)
-{
-	if (access(cmd_name, X_OK) == 0)
-		return (ft_strdup(cmd_name));
-	return (NULL);
-}
 
 char	*search_in_path(char *cmd_name, char **env)
 {
@@ -66,14 +41,12 @@ char	*search_in_path(char *cmd_name, char **env)
 	return (NULL);
 }
 
-
 char	*find_cmd_path(char *cmd_name, char **env)
 {
-	// Verificación si el comando es vacío
-	if (cmd_name == NULL || cmd_name[0] == '\0') {
-		return (NULL);  // Si el comando está vacío, devuelve NULL
+	if (cmd_name == NULL || cmd_name[0] == '\0')
+	{
+		return (NULL);
 	}
-
 	if (ft_strchr(cmd_name, '/'))
 		return (check_direct_path(cmd_name));
 	return (search_in_path(cmd_name, env));
@@ -94,22 +67,13 @@ void	parse_cmds(t_pipex *pipex, char **av, char **env)
 		if (!cmd)
 			(errors(3, "malloc"), free_pipex(pipex), exit(EXIT_FAILURE));
 		cmd->origin_cmd = ft_strdup(av[i + 2]);
-		if (cmd->origin_cmd == NULL || cmd->origin_cmd[0] == '\0') {
-			errors(4, cmd->origin_cmd);  
-			free_pipex(pipex);
-			exit(127);
-		}
+		if (!cmd->origin_cmd || cmd->origin_cmd[0] == '\0')
+			(errors(4, cmd->origin_cmd), free_pipex(pipex), exit(127));
 		cmd->args = ft_split(cmd->origin_cmd, ' ');
-		if (!cmd->args || !cmd->args[0]) {
-			errors(4, cmd->origin_cmd);  
-			free_pipex(pipex);
-			exit(127);
-		}
+		if (!cmd->args || !cmd->args[0])
+			(errors(4, cmd->origin_cmd), free_pipex(pipex), exit(127));
 		cmd->path = find_cmd_path(cmd->args[0], env);
 		pipex->cmds[i++] = cmd;
 	}
 	pipex->cmds[i] = NULL;
 }
-
-
-

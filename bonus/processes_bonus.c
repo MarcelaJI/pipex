@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   processes_bonus.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ingjimen <ingjimen@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/25 09:21:11 by ingjimen          #+#    #+#             */
+/*   Updated: 2025/03/25 09:21:17 by ingjimen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
@@ -38,7 +49,8 @@ void	child1(t_pipex *px, char **env, int i)
 		free_pipex(px);
 		exit(EXIT_FAILURE);
 	}
-	if (dup2(fd_in, STDIN_FILENO) < 0 || dup2(px->pipes[i][WRITE_END], STDOUT_FILENO) < 0)
+	if (dup2(fd_in, STDIN_FILENO) < 0 || dup2(px->pipes[i][WRITE_END],
+		STDOUT_FILENO) < 0)
 	{
 		errors(5, NULL);
 		free_pipex(px);
@@ -48,17 +60,14 @@ void	child1(t_pipex *px, char **env, int i)
 	close_all_pipes(px);
 	if (execute(px->cmds[i], env) < 0)
 	{
-		errors(4, px->cmds[i]->origin_cmd);
-		free_pipex(px);
-		exit(127);
+		(errors(4, px->cmds[i]->origin_cmd), free_pipex(px), exit(127));
 	}
 }
 
-
 void	middle_child(t_pipex *px, char **env, int i)
 {
-	if (dup2(px->pipes[i - 1][READ_END], STDIN_FILENO) < 0 ||
-		dup2(px->pipes[i][WRITE_END], STDOUT_FILENO) < 0)
+	if (dup2(px->pipes[i - 1][READ_END], STDIN_FILENO) < 0
+		|| dup2(px->pipes[i][WRITE_END], STDOUT_FILENO) < 0)
 		(errors(5, NULL), free_pipex(px), exit(EXIT_FAILURE));
 	close_all_pipes(px);
 	if (execute(px->cmds[i], env) < 0)
@@ -75,8 +84,8 @@ void	child2(t_pipex *px, char **env, int i)
 		fd_out = open(px->outfile, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd_out < 0)
 		(errors(2, px->outfile), free_pipex(px), exit(EXIT_FAILURE));
-	if (dup2(px->pipes[i - 1][READ_END], STDIN_FILENO) < 0 ||
-		dup2(fd_out, STDOUT_FILENO) < 0)
+	if (dup2(px->pipes[i - 1][READ_END], STDIN_FILENO) < 0 || dup2(fd_out,
+			STDOUT_FILENO) < 0)
 		(errors(5, NULL), free_pipex(px), exit(EXIT_FAILURE));
 	close(fd_out);
 	close_all_pipes(px);
@@ -99,5 +108,3 @@ void	wait_all(t_pipex *pipex)
 		unlink(HERE_DOC_TMP);
 	free_pipex(pipex);
 }
-
-

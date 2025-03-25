@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc_bonus.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ingjimen <ingjimen@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/25 09:20:09 by ingjimen          #+#    #+#             */
+/*   Updated: 2025/03/25 09:20:11 by ingjimen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex_bonus.h"
 
 void	handle_here_doc(t_pipex *pipex)
@@ -28,4 +40,3 @@ void	handle_here_doc(t_pipex *pipex)
 	}
 	close(fd);
 }
-

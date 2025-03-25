@@ -1,67 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ingjimen <ingjimen@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/25 09:20:21 by ingjimen          #+#    #+#             */
+/*   Updated: 2025/03/25 09:20:23 by ingjimen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex_bonus.h"
-
-char	*get_env_path(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
-			return (env[i] + 5);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*join_path(char *folder, char *cmd)
-{
-	char	*temp;
-	char	*full_path;
-
-	temp = ft_strjoin(folder, "/");
-	if (!temp)
-		return (NULL);
-	full_path = ft_strjoin(temp, cmd);
-	free(temp);
-	return (full_path);
-}
-
-char	*check_direct_path(char *cmd_name)
-{
-	if (access(cmd_name, X_OK) == 0)
-		return (ft_strdup(cmd_name));
-	return (NULL);
-}
-
-char	*search_in_path(char *cmd_name, char **env)
-{
-	char	**paths;
-	char	*joined;
-	char	*path_var;
-	int		i;
-
-	path_var = get_env_path(env);
-	if (!path_var)
-		return (NULL);
-	paths = ft_split(path_var, ':');
-	if (!paths)
-		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		joined = join_path(paths[i], cmd_name);
-		if (access(joined, X_OK) == 0)
-		{
-			ft_free_split(paths);
-			return (joined);
-		}
-		free(joined);
-		i++;
-	}
-	ft_free_split(paths);
-	return (NULL);
-}
 
 char	*find_cmd_path(char *cmd_name, char **env)
 {
@@ -95,13 +44,15 @@ t_cmd	*create_cmd(char *arg, char **env, t_pipex *pipex)
 	return (cmd);
 }
 
-
 void	parse_cmds(t_pipex *pipex, char **av, char **env)
 {
 	int	i;
 	int	offset;
 
-	offset = (pipex->here_doc == 1) ? 3 : 2;
+	if (pipex->here_doc == 1)
+		offset = 3;
+	else
+		offset = 2;
 	pipex->cmds = malloc(sizeof(t_cmd *) * (pipex->number_cmds + 1));
 	if (!pipex->cmds)
 	{
@@ -116,5 +67,3 @@ void	parse_cmds(t_pipex *pipex, char **av, char **env)
 	}
 	pipex->cmds[i] = NULL;
 }
-
-

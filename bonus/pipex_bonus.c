@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ingjimen <ingjimen@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/25 09:20:35 by ingjimen          #+#    #+#             */
+/*   Updated: 2025/03/25 09:20:44 by ingjimen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex_bonus.h"
 
 int	execute(t_cmd *cmd, char **env)
@@ -7,7 +19,7 @@ int	execute(t_cmd *cmd, char **env)
 	if (access(cmd->path, X_OK) != 0)
 		return (-1);
 	execve(cmd->path, cmd->args, env);
-	return (-1); 
+	return (-1);
 }
 
 void	init_pipex(t_pipex *px, int argc, char **argv)
@@ -34,7 +46,7 @@ void	init_pipex(t_pipex *px, int argc, char **argv)
 
 void	pipex(int argc, char **argv, char **env)
 {
-	t_pipex pipex;
+	t_pipex	pipex;
 
 	init_pipex(&pipex, argc, argv);
 	if (pipex.here_doc)
@@ -45,7 +57,6 @@ void	pipex(int argc, char **argv, char **env)
 	close_all_pipes(&pipex);
 	wait_all(&pipex);
 }
-
 
 int	main(int argc, char **argv, char **env)
 {
@@ -61,5 +72,3 @@ int	main(int argc, char **argv, char **env)
 	}
 	pipex(argc, argv, env);
 }
-
-

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ingjimen <ingjimen@student.42madrid.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/25 09:21:36 by ingjimen          #+#    #+#             */
+/*   Updated: 2025/03/25 09:21:42 by ingjimen         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
@@ -19,6 +30,7 @@ void	create_pipes(t_pipex *pipex)
 		i++;
 	}
 }
+
 void	close_all_pipes(t_pipex *pipex)
 {
 	int	i;
@@ -31,6 +43,7 @@ void	close_all_pipes(t_pipex *pipex)
 		i++;
 	}
 }
+
 void	free_pipex(t_pipex *pipex)
 {
 	int	i;
@@ -41,6 +54,7 @@ void	free_pipex(t_pipex *pipex)
 	if (pipex->cmds)
 	{
 		while (++i < pipex->number_cmds)
+		{
 			if (pipex->cmds[i])
 			{
 				ft_safe_free((void **)&pipex->cmds[i]->path);
@@ -48,7 +62,8 @@ void	free_pipex(t_pipex *pipex)
 				ft_free_split(pipex->cmds[i]->args);
 				free(pipex->cmds[i]);
 			}
-		free(pipex->cmds);
+			free(pipex->cmds);
+		}
 	}
 	if (!pipex->pipes)
 		return ;
@@ -58,11 +73,14 @@ void	free_pipex(t_pipex *pipex)
 	free(pipex->pipes);
 }
 
-
 void	errors(int code, char *str)
 {
 	if (code == 1)
-		ft_putendl_fd("Invalid format.\n./pipex [infile | here_doc LIMITER] cmd1 cmd2 ... outfile", 2);
+	{
+		ft_putendl_fd("Invalid format.", 2);
+		ft_putendl_fd("./pipex [infile | here_doc LIMITER]", 2);
+		ft_putendl_fd("cmd1 cmd2 ... outfile", 2);
+	}
 	if (code == 2 || code == 3)
 	{
 		perror(str);
