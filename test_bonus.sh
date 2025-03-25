@@ -118,7 +118,7 @@ sep
 cleanup
 
 ### TEST 8: PATH eliminado y rutas absolutas ###
-echo -e "${BOLD}🧪 Test 8: sin PATH + rutas absolutas${RESET}"
+echo -e "${BOLD}🧪 Test 8: Sin PATH + rutas absolutas${RESET}"
 echo "hola mundo" > input.txt
 unset PATH
 ./pipex input.txt "/bin/cat" "/usr/bin/wc -w" output.txt
@@ -139,7 +139,7 @@ printf "data\nEND\n" | ./pipex here_doc END "cat" "wc" output.txt
 if [ ! -f .heredoc_tmp ]; then
 	print_success ".heredoc_tmp eliminado correctamente"
 else
-	print_error ".heredoc_tmp NO se eliminó"
+	print_error ".heredoc_tmp No se eliminó correctamente"
 fi
 sep
 cleanup
