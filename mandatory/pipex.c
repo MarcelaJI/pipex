@@ -34,7 +34,7 @@ int	pipex(int ac, char **av, char **env)
 	pipex.number_cmds = ac - 3;
 	parse_cmds(&pipex, av, env);
 	if (pipe(pipend) == -1)
-		(errors(5, NULL), free_pipex(&pipex), exit(3));
+		(errors(5, NULL), free_pipex(&pipex), exit(1));
 	pid1 = fork();
 	if (pid1 < 0)
 		(free_pipex(&pipex), exit(EXIT_FAILURE));

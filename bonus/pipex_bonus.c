@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **env)
 	if (!env || !*env)
 	{
 		ft_putendl_fd("No environment found.", 2);
-		exit(1);
+		exit(2);
 	}
 	if ((ft_strncmp(argv[1], "here_doc", 8) == 0 && argc < 6) || argc < 5)
 	{
