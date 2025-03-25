@@ -26,11 +26,13 @@ t_cmd	*create_cmd(char *arg, char **env, t_pipex *pipex)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 	{
-		errors(3, "malloc");
-		free_pipex(pipex);
-		exit(EXIT_FAILURE);
+		(errors(3, "malloc"), free_pipex(pipex), exit(EXIT_FAILURE));
 	}
 	cmd->origin_cmd = ft_strdup(arg);
+	if (!cmd->origin_cmd || cmd->origin_cmd[0] == '\0')
+	{
+		(errors(4, cmd->origin_cmd), free_pipex(pipex), exit(127));
+	}
 	cmd->args = ft_split(cmd->origin_cmd, ' ');
 	if (!cmd->args || !cmd->args[0])
 	{
@@ -40,7 +42,9 @@ t_cmd	*create_cmd(char *arg, char **env, t_pipex *pipex)
 	}
 	cmd->path = find_cmd_path(cmd->args[0], env);
 	if (!cmd->path)
-		errors(4, cmd->origin_cmd);
+	{
+		(errors(4, cmd->origin_cmd), free_pipex(pipex), exit(127));
+	}
 	return (cmd);
 }
 
@@ -53,15 +57,20 @@ void	parse_cmds(t_pipex *pipex, char **av, char **env)
 		offset = 3;
 	else
 		offset = 2;
+	if (pipex->number_cmds < 1)
+		(errors(1, "Invalid number of commands"), exit(1));
 	pipex->cmds = malloc(sizeof(t_cmd *) * (pipex->number_cmds + 1));
 	if (!pipex->cmds)
-	{
-		errors(3, "malloc");
-		exit(EXIT_FAILURE);
-	}
+		(errors(3, "malloc"), exit(EXIT_FAILURE));
 	i = 0;
 	while (i < pipex->number_cmds)
 	{
+		if (!av[i + offset])
+		{
+			errors(4, "Invalid command argument");
+			free_pipex(pipex);
+			exit(127);
+		}
 		pipex->cmds[i] = create_cmd(av[i + offset], env, pipex);
 		i++;
 	}

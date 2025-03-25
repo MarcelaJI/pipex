@@ -62,8 +62,8 @@ void	free_pipex(t_pipex *pipex)
 				ft_free_split(pipex->cmds[i]->args);
 				free(pipex->cmds[i]);
 			}
-			free(pipex->cmds);
 		}
+		free(pipex->cmds);
 	}
 	if (!pipex->pipes)
 		return ;
