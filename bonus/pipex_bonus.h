@@ -47,7 +47,7 @@ typedef struct s_pipex
 	t_cmd	**cmds;
 }			t_pipex;
 
-void		pipex(int argc, char **argv, char **env);
+int			pipex(int argc, char **argv, char **env);
 void		child1(t_pipex *pipex, char **env, int i);
 void		child2(t_pipex *pipex, char **env, int i);
 void		middle_child(t_pipex *pipex, char **env, int i);

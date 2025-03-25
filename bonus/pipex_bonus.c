@@ -44,7 +44,7 @@ void	init_pipex(t_pipex *px, int argc, char **argv)
 	}
 }
 
-void	pipex(int argc, char **argv, char **env)
+int	pipex(int argc, char **argv, char **env)
 {
 	t_pipex	pipex;
 
@@ -56,6 +56,7 @@ void	pipex(int argc, char **argv, char **env)
 	launch_processes(&pipex, env);
 	close_all_pipes(&pipex);
 	wait_all(&pipex);
+	return (0);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -71,4 +72,5 @@ int	main(int argc, char **argv, char **env)
 		exit(1);
 	}
 	pipex(argc, argv, env);
+	return (0);
 }

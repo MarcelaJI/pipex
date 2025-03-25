@@ -38,7 +38,7 @@ typedef struct s_pipex
 	t_cmd	**cmds;
 }			t_pipex;
 
-void		pipex(int ac, char **av, char **env);
+int			pipex(int ac, char **av, char **env);
 void		child1(t_pipex *pipex, char **env, int pipe_fd[2]);
 void		child2(t_pipex *pipex, char **env, int pipe_fd[2]);
 int			wait_childs(int pid1, int pid2, t_pipex *pipex);

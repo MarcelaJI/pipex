@@ -22,7 +22,7 @@ int	execute(t_cmd *cmd, char **env)
 	return (-1);
 }
 
-void	pipex(int ac, char **av, char **env)
+int	pipex(int ac, char **av, char **env)
 {
 	t_pipex	pipex;
 	int		pid1;
@@ -48,6 +48,7 @@ void	pipex(int ac, char **av, char **env)
 		child2(&pipex, env, pipend);
 	close(pipend[0]);
 	wait_childs(pid1, pid2, &pipex);
+	return (0);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -60,4 +61,5 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 5)
 		errors(1, NULL);
 	pipex(argc, argv, env);
+	return (0);
 }
