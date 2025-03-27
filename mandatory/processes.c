@@ -69,7 +69,7 @@ void	child2(t_pipex *pipex, char **env, int pipe_fd[2])
 
 int	wait_childs(int pid1, int pid2, t_pipex *pipex)
 {
-	int		status;
+	int	status;
 
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, &status, 0);

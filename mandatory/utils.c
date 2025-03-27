@@ -17,17 +17,21 @@ void	free_pipex(t_pipex *pipex)
 	int	i;
 
 	i = 0;
-	if (!pipex || !pipex->cmds)
+	if (!pipex)
 		return ;
-	while (pipex->cmds[i])
+	if (pipex->cmds)
 	{
-		ft_safe_free((void **)&pipex->cmds[i]->path);
-		ft_safe_free((void **)&pipex->cmds[i]->origin_cmd);
-		ft_free_split(pipex->cmds[i]->args);
-		ft_safe_free((void **)&pipex->cmds[i]);
-		i++;
+		while (pipex->cmds[i])
+		{
+			ft_safe_free((void **)&pipex->cmds[i]->path);
+			ft_safe_free((void **)&pipex->cmds[i]->origin_cmd);
+			ft_free_split(pipex->cmds[i]->args);
+			ft_safe_free((void **)&pipex->cmds[i]);
+			i++;
+		}
+		ft_safe_free((void **)&pipex->cmds);
 	}
-	ft_safe_free((void **)&pipex->cmds);
+	ft_safe_free((void **)&pipex);
 }
 
 void	errors(int code, char *str)
