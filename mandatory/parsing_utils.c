@@ -46,7 +46,6 @@ void	fill_cmd_args_and_path(t_cmd *cmd, char **env, t_pipex *pipex)
 {
 	if (cmd->origin_cmd[0] == '\0')
 	{
-		errors(4, cmd->origin_cmd);
 		cmd->args = NULL;
 		cmd->path = NULL;
 	}
@@ -80,7 +79,7 @@ t_pipex	*init_pipex_struct(int ac, char **av)
 	if (!pipex->cmds)
 	{
 		errors(3, "malloc");
-		free(pipex);
+		free_pipex(pipex);
 		exit(EXIT_FAILURE);
 	}
 	return (pipex);
