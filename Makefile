@@ -7,7 +7,9 @@ LIBFT_A		= $(LIBFT_DIR)/libft.a
 
 SRCS	= mandatory/pipex.c \
 		  mandatory/path.c \
-		  mandatory/path2.c \
+		  mandatory/path_utils.c \
+		  mandatory/parsing.c \
+		  mandatory/parsing_utils.c \
 		  mandatory/utils.c \
 		  mandatory/processes.c
 
