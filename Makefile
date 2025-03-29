@@ -5,25 +5,13 @@ CFLAGS	= -Wall -Wextra -Werror
 LIBFT_DIR	= Libft
 LIBFT_A		= $(LIBFT_DIR)/libft.a
 
-GNL	= get_next_line/get_next_line_bonus.c \
-	  get_next_line/get_next_line_utils_bonus.c
-
 SRCS	= mandatory/pipex.c \
 		  mandatory/path.c \
 		  mandatory/path2.c \
 		  mandatory/utils.c \
 		  mandatory/processes.c
 
-BSRCS	= bonus/pipex_bonus.c \
-		  bonus/path_bonus.c \
-		  bonus/path_bonus2.c \
-		  bonus/utils_bonus.c \
-		  bonus/here_doc_bonus.c \
-		  bonus/processes_bonus.c 
-		
-
 OBJS	= $(SRCS:.c=.o)
-BOBJS	= $(BSRCS:.c=.o)
 
 GREEN = \033[0;32m
 RED = \033[1;31m
@@ -44,10 +32,6 @@ $(LIBFT_A):
 $(NAME): $(OBJS) $(LIBFT_A)
 	@echo "$(MAGENTA)Compiling $(NAME)$(NC)"
 	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
-
-bonus: $(BOBJS) $(GNL) $(LIBFT_A)
-	@echo "$(MAGENTA)Compiling bonus $(NAME)$(NC)"
-	$(CC) $(CFLAGS) $(BOBJS) $(GNL) -L$(LIBFT_DIR) -lft -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
